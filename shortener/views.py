@@ -1,5 +1,6 @@
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, get_object_or_404
+from django.contrib import messages
 from django.views import View
 
 from shortener.forms import UrlCreateForm
@@ -26,5 +27,6 @@ class UrlCreate(View):
             except Url.DoesNotExist:
                 url = Url.objects.create(url=cd['url'])
         else:
-            return HttpResponse('Error')
-        return HttpResponse(url.url_short)
+            return render(request, 'shortener/index.html', context={'form': form})
+        messages.success(request, url.url_short)
+        return render(request, 'shortener/index.html', context={'form': form})

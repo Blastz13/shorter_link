@@ -1,11 +1,58 @@
-<html>
+<!DOCTYPE html>
+<html lang="ru">
 <head>
-    <title>Shortcut</title>
+  {% load static %}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="{% static 'shortener/css/styles.css' %}">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu&display=swap" rel="stylesheet">
+  <link rel="icon" href="" type="image/x-icon" />
+  <title></title>
 </head>
 <body>
-    <form action="{% url 'UrlCreate' %}" method="post">{% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit">
-    </form>
+<div class="container">
+	<div class="app">
+	    <div class="app__header">
+{#            {% if messages %}#}
+{#                <ul class="messages">#}
+{#                {% for message in messages %}#}
+{#                    <li{% if message.tags %} class="success"{% endif %}>{{ message }}</li>#}
+{#                    <div class="wallet"><img src="{% static 'service/img/money.jpg' %}" style="width: 30px; height: 30px;" alt="money"><p>4100 1503 8591 281</p></div>#}
+{#                {% endfor %}#}
+{#                </ul>#}
+{#            {% endif %}#}
+	      <h1 id="title">Short URL</h1>
+	    </div>
+	    <div>
+	    <form action="{% url 'UrlCreate' %}" method="post">{% csrf_token %}
+            <div class="input">
+                {{ form.url}}
+                {{ form.url.errors }}
+                <div>
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="shortlink__inner">
+                            <input type="text" value="{{ message }}" class="field" id="shortlink">
+                            <input type="button" class="btn_copy" value="Copy" onclick="copy()">
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            <input type="submit" id="submit" value="Shortcut">
+	      </div>
+	    </form>
+		</div>
+	</div>
+</div>
+<script>
+    function copy() {
+  var copyText = document.getElementById("shortlink");
+
+  copyText.select();
+  copyText.setSelectionRange(0, 99999);
+  document.execCommand("copy");
+}
+</script>
 </body>
 </html>
