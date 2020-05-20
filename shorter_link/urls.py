@@ -15,8 +15,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from shortener.views import UrlView, UrlCreate
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('shortener.urls')),
+    path('create/', UrlCreate.as_view(), name='UrlCreate'),
+    path('<slug:hash>/', UrlView.as_view()),
 ]
+
+if settings.DEBUG is True:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
