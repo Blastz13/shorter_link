@@ -1,0 +1,35 @@
+version: '3.3'
+services:
+    web:
+        restart: always
+        build: .
+        command: bash -c "gunicorn shorter_link.wsgi:application --bind 0.0.0.0:8000"
+        volumes:
+            - .:/var/www/
+        ports:
+            - "8000:8000"
+        env_file:
+            - .env
+        depends_on:
+            - db
+    db:
+        image: postgres:11
+        environment:
+            - POSTGRES_USER=postgres_user
+            - POSTGRES_PASSWORD=postgres_password
+            - POSTGRES_DB=postgres_db
+    nginx:
+        restart: always
+        image: nginx:latest
+        expose:
+            - 80
+            - 443
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - ./nginx/config/:/etc/nginx/conf.d/
+            - ./nginx/ssl/:/etc/ssl/
+            - ./static:/var/www/static
+        depends_on:
+            - web

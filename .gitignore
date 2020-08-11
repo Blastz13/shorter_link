@@ -3,3 +3,5 @@ Include
 Lib
 Scripts
 db.sqlite3
+__pycache_
+shortener.log
